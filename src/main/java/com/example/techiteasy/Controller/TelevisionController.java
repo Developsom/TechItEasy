@@ -2,15 +2,25 @@ package com.example.techiteasy.Controller;
 
 
 import com.example.techiteasy.Exceptions.RecordNotFoundException;
+import com.example.techiteasy.Model.Television;
+import com.example.techiteasy.Repository.TelevisionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+import java.util.List;
 
 @RestController
 public class TelevisionController {
 
+    @Autowired
+    TelevisionRepository repo;
+
     @GetMapping("television")
-    public ResponseEntity<String> getAllTelevisions() {
-        return ResponseEntity.ok("television");
+    public ResponseEntity<List> getAllTelevisions() {
+        return ResponseEntity.ok(repo.findAll());
     }
 
 
@@ -29,13 +39,25 @@ public class TelevisionController {
     }
 
     @PostMapping("television")
-    public ResponseEntity<String> addTvList(@RequestBody String television ){
-        return ResponseEntity.created(null).body(television);
+    public ResponseEntity<Television> addTvList(@RequestBody Television television ){
+        repo.save(television);
+
+        URI uri = URI.create(ServletUriComponentsBuilder
+                .fromCurrentRequest().path("/" + television.getId()).toUriString());
+
+        return ResponseEntity.created(uri).body(television);
+
     }
 
-    @DeleteMapping("television/{id}")
-    public ResponseEntity<String> deleteTvById(@PathVariable int id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteTvById(@PathVariable Long id) {
+        repo.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("/delete/{name}")
+    public ResponseEntity<String> deleteTvByName(@PathVariable String name){
+        repo.deleteByName(name);
+        return ResponseEntity.noContent().build();
+    }
 }
