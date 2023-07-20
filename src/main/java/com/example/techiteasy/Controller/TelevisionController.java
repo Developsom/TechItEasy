@@ -11,6 +11,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class TelevisionController {
@@ -38,15 +39,14 @@ public class TelevisionController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("television")
-    public ResponseEntity<Television> addTvList(@RequestBody Television television ){
+    @PostMapping
+    public ResponseEntity<Television> addTvList(@RequestBody Television television){
         repo.save(television);
 
         URI uri = URI.create(ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/" + television.getId()).toUriString());
 
         return ResponseEntity.created(uri).body(television);
-
     }
 
     @DeleteMapping("/{id}")
@@ -56,8 +56,14 @@ public class TelevisionController {
     }
 
     @DeleteMapping("/delete/{name}")
-    public ResponseEntity<String> deleteTvByName(@PathVariable String name){
+    public ResponseEntity<String> deleteByName(@PathVariable String name){
         repo.deleteByName(name);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/find/{name}")
+    public ResponseEntity<Television> findTvByName(@PathVariable String name){
+        Optional <Television> optionaltv = repo.findByName(name);
+        return optionaltv.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.noContent().build());
     }
 }
