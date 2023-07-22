@@ -13,6 +13,7 @@ import java.util.Optional;
 
 
 @RestController
+@RequestMapping(value = "/televisions")
 public class TelevisionController {
 
 
