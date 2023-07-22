@@ -1,4 +1,5 @@
 package com.example.techiteasy.Controller;
+import com.example.techiteasy.Dto.Output.TelevisionOutputDto;
 import com.example.techiteasy.Exceptions.RecordNotFoundException;
 import com.example.techiteasy.Model.Television;
 import com.example.techiteasy.Services.TelevisionService;
@@ -12,16 +13,12 @@ import java.util.Optional;
 
 
 
+
 @RestController
 @RequestMapping(value = "/televisions")
 public class TelevisionController {
 
-
-
-
-
-
-
+        //Modern @Autowired: Constructor injection
     private final TelevisionService televisionService;
     public TelevisionController(TelevisionService televisionService) {
         this.televisionService = televisionService;
@@ -31,11 +28,11 @@ public class TelevisionController {
 
         ////Get methods
 
-    @GetMapping("television")
+    @GetMapping()
     public ResponseEntity<List> getAllTelevisions() {
-        return ResponseEntity.ok(repo.findAll());
+        List<TelevisionOutputDto> TelevisionOutput = televisionService.getAllTelevisions();
+        return ResponseEntity.ok(TelevisionOutput);
     }
-
 
     @GetMapping("television/{id}")
     public ResponseEntity<String> GetTvWithId(@PathVariable int id) {
@@ -48,7 +45,7 @@ public class TelevisionController {
 
     @GetMapping("/find/{name}")
     public ResponseEntity<Television> findTvByName(@PathVariable String name){
-        Optional <Television> optionaltv = repo.findByName(name);
+        Optional <Television> optionaltv = televisionService./*Create corresponding method in Service*/(name);
         return optionaltv.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.noContent().build());
     }
 
@@ -73,7 +70,7 @@ public class TelevisionController {
 
     @PostMapping
     public ResponseEntity<Television> addTvList(@RequestBody Television television){
-        repo.save(television);
+        televisionService./*Create corresponding method in Service*/(television);
 
         URI uri = URI.create(ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/" + television.getId()).toUriString());
@@ -91,13 +88,13 @@ public class TelevisionController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteTvById(@PathVariable Long id) {
-        repo.deleteById(id);
+        televisionService./*Create corresponding method in Service*/(id);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/delete/{name}")
     public ResponseEntity<String> deleteByName(@PathVariable String name){
-        repo.deleteByName(name);
+        televisionService./*Create corresponding method in Service*/(name);
         return ResponseEntity.noContent().build();
     }
 

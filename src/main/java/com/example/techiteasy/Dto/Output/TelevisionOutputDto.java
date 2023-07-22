@@ -2,20 +2,21 @@ package com.example.techiteasy.Dto.Output;
 
 public class TelevisionOutputDto {
     public Long id;
-    private String type;
-    private String brand;
-    private String name;
-    private Double price;
-    private Double availableSize;
-    private Double refreshRate;
-    private String screenType;
-    private String screenQuality;
-    private Boolean smartTv;
-    private Boolean wifi;
-    private Boolean voiceControl;
-    private Boolean hdr;
-    private Boolean bluetooth;
-    private Boolean ambiLight;
-    private Integer originalStock;
-    private Integer sold;
+    public String type;
+    public String brand;
+
+    public String name;
+    public Double price;
+    public Double availableSize;
+    public Double refreshRate;
+    public String screenType;
+    public String screenQuality;
+    public Boolean smartTv;
+    public Boolean wifi;
+    public Boolean voiceControl;
+    public Boolean hdr;
+    public Boolean bluetooth;
+    public Boolean ambiLight;
+    public Integer originalStock;
+    public Integer sold;
 }
