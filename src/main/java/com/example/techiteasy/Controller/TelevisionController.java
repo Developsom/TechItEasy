@@ -1,6 +1,4 @@
 package com.example.techiteasy.Controller;
-
-
 import com.example.techiteasy.Exceptions.RecordNotFoundException;
 import com.example.techiteasy.Model.Television;
 import com.example.techiteasy.Services.TelevisionService;
@@ -11,6 +9,9 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+
+
+
 @RestController
 public class TelevisionController {
 
@@ -18,17 +19,16 @@ public class TelevisionController {
 
 
 
-    public TelevisionService televisionService;
+
+
+    private final TelevisionService televisionService;
     public TelevisionController(TelevisionService televisionService) {
         this.televisionService = televisionService;
     }
 
 
 
-
-
-
-
+        ////Get methods
 
     @GetMapping("television")
     public ResponseEntity<List> getAllTelevisions() {
@@ -45,10 +45,30 @@ public class TelevisionController {
         return ResponseEntity.ok("television: " + id);
     }
 
+    @GetMapping("/find/{name}")
+    public ResponseEntity<Television> findTvByName(@PathVariable String name){
+        Optional <Television> optionaltv = repo.findByName(name);
+        return optionaltv.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.noContent().build());
+    }
+
+
+
+
+
+            //Put methods
+
     @PutMapping("television/{id}")
     public ResponseEntity<String> updateTvList(@PathVariable int id, @RequestParam String name) {
         return ResponseEntity.noContent().build();
     }
+
+
+
+
+
+
+
+            //Post methods
 
     @PostMapping
     public ResponseEntity<Television> addTvList(@RequestBody Television television){
@@ -59,6 +79,14 @@ public class TelevisionController {
 
         return ResponseEntity.created(uri).body(television);
     }
+
+
+
+
+
+
+                //Delete methods
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteTvById(@PathVariable Long id) {
@@ -72,9 +100,5 @@ public class TelevisionController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/find/{name}")
-    public ResponseEntity<Television> findTvByName(@PathVariable String name){
-        Optional <Television> optionaltv = repo.findByName(name);
-        return optionaltv.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.noContent().build());
-    }
+
 }
