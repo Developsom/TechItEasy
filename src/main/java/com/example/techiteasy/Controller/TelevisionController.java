@@ -3,12 +3,10 @@ package com.example.techiteasy.Controller;
 
 import com.example.techiteasy.Exceptions.RecordNotFoundException;
 import com.example.techiteasy.Model.Television;
-import com.example.techiteasy.Repository.TelevisionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.techiteasy.Services.TelevisionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -16,8 +14,21 @@ import java.util.Optional;
 @RestController
 public class TelevisionController {
 
-    @Autowired
-    TelevisionRepository repo;
+
+
+
+
+    public TelevisionService televisionService;
+    public TelevisionController(TelevisionService televisionService) {
+        this.televisionService = televisionService;
+    }
+
+
+
+
+
+
+
 
     @GetMapping("television")
     public ResponseEntity<List> getAllTelevisions() {
