@@ -35,13 +35,10 @@ public class TelevisionController {
     }
 
     @GetMapping("television/{id}")
-    public ResponseEntity<String> GetTvWithId(@PathVariable int id) {
-
-        if (id == 5) {
-            throw new RecordNotFoundException("Novi is de beste");
-        }
-        return ResponseEntity.ok("television: " + id);
-    }
+    public ResponseEntity<String> getTelevisionById(@PathVariable Long id) {
+        Optional<Television> TelevisionOutputById = televisionService.getTelevisionById(id);
+        return ResponseEntity.noContent().build();
+    } //Continue from this method
 
     @GetMapping("/find/{name}")
     public ResponseEntity<Television> findTvByName(@PathVariable String name){
